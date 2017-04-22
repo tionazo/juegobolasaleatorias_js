@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Juego Bolas Aleatorias</title>
+	<link rel="stylesheet" href="style.css" type="text/css"/>
+	<!--<script type="text/javascript" src="javascript.js"></script>-->
+	<script type="text/javascript" src="javascript_tionazo.js"></script>
+</head>
+<body>
+	<header>
+		<h1>Juego Bolas Aleatorias</h1>
+    </header>
+    
+    <div id="reglas">
+        <h2>Reglas del juego</h2>
+        <p>Intenta explotar (click) las bolas antes de que se salgan del tablero.</p>
+        <p>Cuanto más pequeñas, más puntos ganas</p>
+        <p>Por cada bola que se escapa del tablero, te restan puntos</p>
+    </div>
+
+    <div id="formularioCambioTamano">
+        <label> Alto: </label>
+        <input id="alto" type="text" size="15"/>
+        <label> Ancho: </label>
+        <input id="ancho" type="text" size="15"/>
+        <input type="button" onclick="cambiarTamanoTablero()" value="Cambiar Tamaño Tablero"/>
+    </div>
+
+    <div id="zonaDeJuego">
+        <!--
+        <input type="button" onclick='setInterval("moverDerecha()",6000)' value="Mover Derecha">
+        <input type="button" onclick='setInterval("moverIzquierda()",2000)' value="Mover Izquierda">
+        <input type="button" onclick='setInterval("moverArriba()",6000)' value="Mover Arriba">
+        <input type="button" onclick='setInterval("moverAbajo()",6000)' value="Mover Abajo">	
+        -->
+    
+        <div id="tablero"></div>
+        <!--<section></section>-->
+        
+        <div id="marcador">
+            <div id="creadas">Pelotas Creadas:<br><span id="numCreadas">0</span> </div>
+
+            <div id="perdidas">Pelotas Perdidas:<br><span id="numPerdidas">0</span></div>
+
+            <div id="eliminadas">Pelotas Eliminadas:<br><span id="numEliminadas">0</span></div>
+
+            <div id="puntos">Puntos:<br><span id="numPuntos">0</span></div>
+            
+            <input type="button" id="destruye" onclick='destruyeTodasBolas()' value="Destruye las bolas">
+        </div>
+    
+    </div>
+		
+	<footer></footer>
+</body>
+</html>
