@@ -41,6 +41,15 @@ input{
     text-align: center;
 }
 
+#botoneraControlJuego {
+    text-align: center;
+}
+
+#botoneraControlJuego input {
+    width: 10em;
+    height: 4em;
+}
+
 #zonaDeJuego {
     text-align: center;    
 }
@@ -94,6 +103,7 @@ input{
     border-radius: 15px;
     display: inline-block;
     font-size: 1.1em;
+    height: 3em;
     margin: 2em;
     text-align-last: center;
     width: 10em;
