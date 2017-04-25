@@ -26,14 +26,15 @@
         <input id="ancho" type="text" size="15"/>
         <input type="button" onclick="cambiarTamanoTablero()" value="Cambiar Tamaño Tablero"/>
     </div>
+    
 
     <div id="zonaDeJuego">
-        <!--
-        <input type="button" onclick='setInterval("moverDerecha()",6000)' value="Mover Derecha">
-        <input type="button" onclick='setInterval("moverIzquierda()",2000)' value="Mover Izquierda">
-        <input type="button" onclick='setInterval("moverArriba()",6000)' value="Mover Arriba">
-        <input type="button" onclick='setInterval("moverAbajo()",6000)' value="Mover Abajo">	
-        -->
+        <input type="button" id="arrancaMovimiento" onclick='arrancaMovimiento()' value="Inicia Movimiento">	
+		<input type="button" id="paraMovimiento" onclick='paraMovimiento()' value="Pausa Movimiento">	
+		
+		<input type="button" id="arrancaCreacion" onclick='arrancaCreacion()' value="Inicia Creación">	
+		<input type="button" id="paraCreacion" onclick='paraCreacion()' value="Pausa Creación">	
+   
     
         <div id="tablero"></div>
         <!--<section></section>-->

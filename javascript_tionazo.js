@@ -11,6 +11,7 @@ var idBola = 0;
 var tablero;
 var anchotablero;
 var altotablero;
+var arrayBolas = new Array();
 
 //Creamos una funcion que nos indica el tamaño por defecto del tablero para poder cambiar sus valores
 function valores() {
@@ -28,45 +29,44 @@ function tamañoAleatorio() {
 
 //función que nos devuelve un aleatorio dentro del tablero conociendo el ancho
 function posicionAleatoriaX() {
-    //var tablero = document.getElementById("tablero");
-    //var anchotablero = tablero.offsetWidth-64;
-    return Math.floor(Math.random() * (anchotablero+1)) + parseInt(0);
+
+    return Math.floor(Math.random() * (anchotablero-64)) + parseInt(0);
 }
 
 //función que nos devuelve un aleatorio dentro del tablero conociendo el alto
 function posicionAleatoriaY() {
-    //var tablero = document.getElementById("tablero");
-    //var altotablero = tablero.offsetHeight-64;
-    return Math.floor(Math.random() * (altotablero+1)) + parseInt(0);
+
+    return Math.floor(Math.random() * (altotablero-64)) + parseInt(0);
 }
 
 //funcion que crea las bolas
 function crearBolas() {
-    //var tablero = document.getElementById("tablero"); 
+    var tamano = tamañoAleatorio();
     var posicionx = posicionAleatoriaX(); 
     var posiciony = posicionAleatoriaY();
-    var capa = document.createElement("div");
-    var tamano = tamañoAleatorio();
-    capa.setAttribute("class","bola");
+    var miBola = document.createElement("div");
+    miBola.setAttribute("class","bola");
     
     // establecemos la dirección de la bola en el momento de su creación
     direccion = Math.floor(Math.random()*8+0);
-    capa.className += " " + direccion;
+    miBola.className += " " + direccion;
     
     // le damos un id a cada bola
-    capa.setAttribute("id", idBola++);
+    miBola.setAttribute("id", idBola++);
     
-    capa.addEventListener("click",eliminarBola,false); //addEventListener genera un this al objeto del escuchador
+    miBola.addEventListener("click",eliminarBola,false); //addEventListener genera un this al objeto del escuchador
 
-    capa.style.width = tamano + "px";
-    capa.style.height = tamano + "px";
+    miBola.style.width = tamano + "px";
+    miBola.style.height = tamano + "px";
     
-    capa.style.marginLeft = posicionx + "px";
-    capa.style.marginTop = posiciony + "px";
+    miBola.style.marginLeft = posicionx + "px";
+    miBola.style.marginTop = posiciony + "px";
     
-    capa.style.backgroundColor = colorAleatorio();
+    miBola.style.backgroundColor = colorAleatorio();
 
-    tablero.appendChild(capa);
+    tablero.appendChild(miBola);
+    
+    arrayBolas.push(miBola);
     
     pelotasCreadas++;
     contarPelotasCreadas();
@@ -76,7 +76,6 @@ function crearBolas() {
 function cambiarTamanoTablero() {
     anchotablero = parseInt(document.getElementById("ancho").value);
     altotablero = parseInt(document.getElementById("alto").value);
-    //var tablero = document.getElementById("tablero");
     tablero.style.width = anchotablero + "px";
     tablero.style.height = altotablero + "px";    
 }
@@ -92,12 +91,7 @@ function colorAleatorio() {
 
 //funcion que elimina las bolas al pinchar sobre ellas
 function eliminarBola() {
-    //var tablero = document.getElementById("tablero");
-    //var bola = document.getElementsByClassName("bola");
-
     puntos += 61 - parseInt(this.offsetWidth);
-    
-    //console.log(this.offsetWidth + " : " + puntos );
     tablero.removeChild(this);
     pelotasEliminadas++;
     contarPelotasEliminadas();
@@ -105,12 +99,14 @@ function eliminarBola() {
 
 //funcion que elimina las bolas que se pierden
 function perderBola( bola ) {
-    //var tablero = document.getElementById("tablero");
-    //var bola = document.getElementsByClassName("bola");
+    
 
     puntos -= Math.floor((61 - parseInt(bola.offsetWidth)) / 4);
     
-    //console.log(bola.offsetWidth + " : " + puntos );
+    var i = arrayBolas.indexOf(bola);
+    if( arrayBolas[i] != -1)
+        arrayBolas.splice(i, 1);
+    
     tablero.removeChild(bola);
     pelotasPerdidas++;
     contarPelotasPerdidas();
@@ -140,15 +136,9 @@ function moverDerecha(miBola) {
         var xMiBola = parseInt(miBola.style.marginLeft.substring(0, miBola.style.marginLeft.length - 2));
         miBola.style.marginLeft = xMiBola + 5 + 'px';
         
-        //var tablero = document.getElementById("tablero");
         var wtablero = tablero.clientWidth;
 
         if( xMiBola + wMiBola > wtablero ) {
-            /*
-            tablero.removeChild(miBola);
-            pelotasPerdidas++;
-            contarPelotasEliminadas();
-            */
             perderBola(miBola);
         }
 }
@@ -187,7 +177,6 @@ function moverAbajo(miBola) {
         var yMiBola = parseInt(miBola.style.marginTop.substring(0, miBola.style.marginTop.length - 2));
         miBola.style.marginTop = yMiBola + 5 + 'px';
 
-        //var tablero = document.getElementById("tablero");
         var htablero = tablero.clientHeight;
         
         if( yMiBola + hMiBola > htablero ) {
@@ -199,54 +188,6 @@ function moverAbajo(miBola) {
         }
 }
 
-/*
-
-//funcion que decide el siguiente movimento de forma aleatoria
-function movimentoAleatorio_old() {
-
-    var todasBolas = document.getElementsByClassName("bola");
-    var miBola = todasBolas[Math.floor(Math.random() * todasBolas.length)];
-    
-    for (var i = 0; i < todasBolas.length; i++) 
-    {
-        var proximoMovimiento = Math.floor(Math.random() * 4);
-        //console.log(proximoMovimiento);
-        direccion = todasBolas[i].classList[1];
-        switch (direccion) {
-            case 0: 
-                // arriba
-                // ejecuta varias veces el mismo movimiento para que parezca que se está moviendo un rato en la misma dirección
-                moverArriba(miBola);
-                moverArriba(miBola);
-                moverArriba(miBola);
-                moverArriba(miBola);
-                break;
-            case 1: 
-                // derecha
-                moverDerecha(miBola);
-                moverDerecha(miBola);
-                moverDerecha(miBola);
-                moverDerecha(miBola);
-                break;
-            case 2: 
-                // abajo
-                moverAbajo(miBola);
-                moverAbajo(miBola);
-                moverAbajo(miBola);
-                moverAbajo(miBola);
-                break;
-            case 3: 
-                // izquierda
-                moverIzquierda(miBola);
-                moverIzquierda(miBola);
-                moverIzquierda(miBola);
-                moverIzquierda(miBola);
-                break;
-        }
-    }
-}
-
-*/
 
 //funcion que decide el siguiente movimento de forma aleatoria
 function movimentoAleatorio() {
@@ -298,29 +239,75 @@ function movimentoAleatorio() {
 }
 
 
-function destruyeTodasBolas() {
+function destruyeTodasBolas_orig() {
+    paraCreacion();
     var todasBolas = document.getElementsByClassName("bola");
+    console.log(todasBolas.length);
     for (var i = 0; i < todasBolas.length; i++) {
         var miBola = todasBolas[i];
         //var tablero = document.getElementById("tablero");
         tablero.removeChild(miBola);
         pelotasPerdidas++;
-        contarPelotasPerdidas();
     }
+    contarPelotasPerdidas();
+
+    //arrancaCreacion();
+}
+    
+function destruyeTodasBolas() {
+    paraCreacion();
+    
+    console.log(arrayBolas.length);
+    for (var i = 0; i < arrayBolas.length; i++) {
+        var miBola = arrayBolas[i];
+        //var tablero = document.getElementById("tablero");
+        tablero.removeChild(miBola);
+        pelotasPerdidas++;
+    }
+    arrayBolas.splice(0,arrayBolas.length);
+    contarPelotasPerdidas();
+
+    arrancaCreacion();
 }
     
     
     
+function paraMovimiento() {
+    clearInterval(intervalMovimientoAleatorio);
+    console.log(intervalMovimientoAleatorio);
+    document.getElementById("paraMovimiento").disabled = true;
+    document.getElementById("arrancaMovimiento").disabled = false;
+}
+
+function arrancaMovimiento() {
+    intervalMovimientoAleatorio = setInterval(movimentoAleatorio, MILISEGUNDOS);
+    console.log(intervalMovimientoAleatorio);
+    document.getElementById("arrancaMovimiento").disabled = true;
+    document.getElementById("paraMovimiento").disabled = false
+}
+
+function paraCreacion() {
+    clearInterval(intervalCrearBolas);
+    console.log(intervalCrearBolas);
+    document.getElementById("paraCreacion").disabled = true;
+    document.getElementById("arrancaCreacion").disabled = false; 
+}
+
+function arrancaCreacion() {
+    intervalCrearBolas = setInterval(crearBolas,MILISEGUNDOS*10);
+    console.log(intervalCrearBolas);
+    document.getElementById("arrancaCreacion").disabled = true
+    document.getElementById("paraCreacion").disabled = false;
+
+}
+
+   
 //Cargamos las funciones el iniciar la web
 window.onload = function () {
     valores();
     crearBolas();
-    setInterval(crearBolas,MILISEGUNDOS*10);
-    setInterval(movimentoAleatorio, MILISEGUNDOS);
-
-    //setInterval(moverIzquierda, MILISEGUNDOS/2);
-    //setInterval(moverDerecha, MILISEGUNDOS/2);
-    //setInterval(moverAbajo, MILISEGUNDOS);
-    //setInterval(moverArriba, MILISEGUNDOS/2);
+    
+    arrancaCreacion();
+    arrancaMovimiento();
+    
 }
-
